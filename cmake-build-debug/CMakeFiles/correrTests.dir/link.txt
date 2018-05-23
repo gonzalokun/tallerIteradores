@@ -1,0 +1,1 @@
+/usr/bin/c++   -g   CMakeFiles/correrTests.dir/tests/tests_taxonomia.cpp.o  -o correrTests tests/google-test/libgtest.a tests/google-test/libgtest_main.a tests/google-test/libgtest.a -lpthread 

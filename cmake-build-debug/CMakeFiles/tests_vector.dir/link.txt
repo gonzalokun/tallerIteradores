@@ -1,0 +1,1 @@
+/usr/bin/c++   -g   CMakeFiles/tests_vector.dir/tests/tests_vector.cpp.o  -o tests_vector tests/google-test/libgtest.a tests/google-test/libgtest_main.a tests/google-test/libgtest.a -lpthread 

@@ -1,0 +1,55 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_6be30/fast"
+/usr/bin/make -f CMakeFiles/cmTC_6be30.dir/build.make CMakeFiles/cmTC_6be30.dir/build
+make[1]: se entra en el directorio '/home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6be30.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_6be30.dir/CheckSymbolExists.c.o   -c /home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_6be30
+/opt/clion-2017.1.3/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6be30.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_6be30.dir/CheckSymbolExists.c.o  -o cmTC_6be30 -rdynamic 
+CMakeFiles/cmTC_6be30.dir/CheckSymbolExists.c.o: En la función `main':
+CheckSymbolExists.c:(.text+0x16): referencia a `pthread_create' sin definir
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_6be30.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_6be30'
+make[1]: *** [cmTC_6be30] Error 1
+make[1]: se sale del directorio '/home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/cmake-build-debug/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_6be30/fast'
+make: *** [cmTC_6be30/fast] Error 2
+
+File /home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/cmake-build-debug/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_19738/fast"
+/usr/bin/make -f CMakeFiles/cmTC_19738.dir/build.make CMakeFiles/cmTC_19738.dir/build
+make[1]: se entra en el directorio '/home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_19738.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_19738.dir/CheckFunctionExists.c.o   -c /opt/clion-2017.1.3/bin/cmake/share/cmake-3.7/Modules/CheckFunctionExists.c
+Linking C executable cmTC_19738
+/opt/clion-2017.1.3/bin/cmake/bin/cmake -E cmake_link_script CMakeFiles/cmTC_19738.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_19738.dir/CheckFunctionExists.c.o  -o cmTC_19738 -rdynamic -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_19738.dir/build.make:97: fallo en las instrucciones para el objetivo 'cmTC_19738'
+make[1]: *** [cmTC_19738] Error 1
+make[1]: se sale del directorio '/home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/cmake-build-debug/CMakeFiles/CMakeTmp'
+Makefile:126: fallo en las instrucciones para el objetivo 'cmTC_19738/fast'
+make: *** [cmTC_19738/fast] Error 2
+
+
