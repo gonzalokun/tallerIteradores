@@ -116,21 +116,6 @@ public:
 	private:
 		// COMPLETAR
 
-//        //CAMBIAR ESTO
-//        iterator(Nodo*);
-//
-//        //Elemento que guarda un nodo
-//        //T* elemento;
-//
-//		//Elemento que representa un nodo
-//		Nodo* elemento;
-//
-//        //Indice de la posicion actual en el hijo de nodo, para poder recorrerlo
-//        int posVecElemActual;
-//
-//        //Stack de los padres del nodo
-//        std::stack<T> padres;
-
 		//Ctor privado, le dice donde empieza
 		iterator(Nodo* inicio);
 

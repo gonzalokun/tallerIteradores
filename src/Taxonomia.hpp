@@ -90,6 +90,7 @@ typename Taxonomia<T>::iterator Taxonomia<T>::begin() {
 template<class T>
 typename Taxonomia<T>::iterator Taxonomia<T>::end() {
 	//Preorder Creo algo que vaya al principio y busco siempre el ultimo hijo
+    //Quiza se pueda hacer mejor...
     assert(false);
 }
 
@@ -102,21 +103,23 @@ Taxonomia<T>::iterator::iterator() : nodoActual(nullptr), padres(){
 
 template<class T>
 Taxonomia<T>::iterator::iterator(Taxonomia<T>::Nodo *elem) {
-    //
+    //Seteo el nodo por donde empieza a recorrer
+    nodoActual = elem;
 }
 
 // Referencia mutable al nombre de la categoría actual.
 // Pre: el iterador está posicionado sobre una categoría.
 template<class T>
 T& Taxonomia<T>::iterator::operator*() const {
-    //
+    //Devuelvo una referencia al valor del nodo
+    return nodoActual->valor;
 }
 
 // Cantidad de subcategorías de la categoría actual.
 // Pre: el iterador está posicionado sobre una categoría.
 template<class T>
 int Taxonomia<T>::iterator::cantSubcategorias() const {
-	assert(false);
+    return (int) nodoActual->hijos.size();
 }
 
 // Ubica el iterador sobre la i-ésima subcategoría.
@@ -124,14 +127,19 @@ int Taxonomia<T>::iterator::cantSubcategorias() const {
 // y además 0 <= i < cantSubcategorias().
 template<class T>
 void Taxonomia<T>::iterator::subcategoria(int i) {
-	assert(false);
+    //Apilo al nodoActual como padre
+    padres.push(std::make_pair(nodoActual, i));
+
+    //Ahora tengo que mover el nodo actual al hijo correcto
+    nodoActual = nodoActual->hijos[i];
 }
 
 // Devuelve true sii la categoría actual es la raíz. 
 // Pre: el iterador está posicionado sobre una categoría.
 template<class T>
 bool Taxonomia<T>::iterator::esRaiz() const {
-	assert(false);
+    //Si no hay padres guardados, entonces estoy en la raiz
+    return padres.size() == 0;
 }
 
 // Ubica el iterador sobre la supercategoría de la categoría
@@ -158,7 +166,8 @@ bool Taxonomia<T>::iterator::operator==(
 // de la taxonomía.
 template<class T>
 void Taxonomia<T>::iterator::operator++() {
-    //
+    //Hay que avanzar!!!!!
+
 }
 
 // Ubica el iterador sobre la categoría anterior a la actual
