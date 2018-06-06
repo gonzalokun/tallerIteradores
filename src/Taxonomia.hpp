@@ -91,7 +91,22 @@ template<class T>
 typename Taxonomia<T>::iterator Taxonomia<T>::end() {
 	//Preorder Creo algo que vaya al principio y busco siempre el ultimo hijo
     //Quiza se pueda hacer mejor...
-    assert(false);
+    Taxonomia<T>::iterator it = iterator(_raiz);
+
+    //Tengo que poner el iterador al final de la taxonomia, recorro todo por el ultimo elem del vector
+    while(it.nodoActual->hijos.size() > 0){
+        //Si hay hijos agarro el último insertado
+
+        //Guardo el padre y la pos en el array de hijos para poder recorrer con --
+        it.padres.emplace(it.nodoActual, it.nodoActual->hijos.size() - 1);
+
+        //Cambio el nodo por el siguiente
+        //it.nodoActual = it.nodoActual->hijos[it.nodoActual->hijos.size() - 1];
+        it.nodoActual = it.nodoActual->hijos.back(); // .back() es el último insertado, deberia dar lo mismo que arriba
+    }
+
+    //Ahora it esta posicionado en el final Y tiene los padres correctos cargados
+    return it;
 }
 
 // Constructor por defecto del iterador.
@@ -148,7 +163,12 @@ bool Taxonomia<T>::iterator::esRaiz() const {
 // y además !esRaiz()
 template<class T>
 void Taxonomia<T>::iterator::supercategoria() {
-	assert(false);
+	//La supercategoria en este caso es el primer padre de la pila de padres (o sea el último agregado)
+    //Cambiamos el puntero a ese
+    nodoActual = padres.top().first;
+
+    //Sacamos ese padre de padres
+    padres.pop();
 }
 
 // Compara dos iteradores por igualdad.
@@ -156,7 +176,8 @@ void Taxonomia<T>::iterator::supercategoria() {
 template<class T>
 bool Taxonomia<T>::iterator::operator==(
 		const Taxonomia<T>::iterator& otro) const {
-	assert(false);
+    //Tengo que ver que los iteradores sean iguales, me fijo las posiciones de memoria
+    return nodoActual == otro.nodoActual;
 }
 
 // Ubica el iterador sobre la categoría siguiente a la actual
@@ -167,7 +188,92 @@ bool Taxonomia<T>::iterator::operator==(
 template<class T>
 void Taxonomia<T>::iterator::operator++() {
     //Hay que avanzar!!!!!
+    //Para avanzar hago esto:
+    //  Me fijo si el nodo actual tiene hijos
+    //  Si tiene:
+    //      Si no recorri todos los hijos:
+    //          Voy al siguiente hijo
+    //      Si recorri todos:
+    //          Vuelvo al padre
+    //  Si no tiene hijos:
+    //      Vuelvo al padre
+    //
+    //NOTA: Si el nodo actual es igual al end, no hay que avanzar!
+    //Con algo asi se puede recorrer todo en preorder
 
+    //Empiezo
+
+    //Acá me fijo si avanzo o no
+    //Si entoy al final entonces todos los padres tienen la posicion cantHijos - 1 en el stack
+    std::stack<std::pair<Nodo*, int>> copiaStack(padres);
+    bool estoyAlfinal = true;
+
+    while(!copiaStack.empty()){
+        if(copiaStack.top().second != copiaStack.top().first->hijos.size() - 1){
+            estoyAlfinal = false;
+            break;
+        }
+
+        copiaStack.pop();
+    }
+
+    if(estoyAlfinal)
+        return;
+    //
+
+    if(nodoActual->hijos.size() != 0){
+        //Si el nodo tiene hijos por recorrer, se pasa al que sigue
+        //Para ver por que hijo se recorrió, me fijo en el stack de padres
+        //No borro un padre hasta no haber recorrido todo el vector en el stack
+
+        //Si no se entro a este padre
+        if(padres.empty() || padres.top().first != nodoActual){
+            //El de arriba de todo no es el actual, tengo que agregarlo
+            padres.emplace(nodoActual, 0);
+
+            //Ahora el nodo actual es el primer hijo
+            nodoActual = nodoActual->hijos[0];
+        }
+    }
+    else{
+        //El nodo no tiene hijos
+        //Tengo que volver al padre
+
+        nodoActual = padres.top().first;
+
+        //Si estoy aca es porque volvi de un hijo
+        //Me tengo que fijar en el stack como moverme
+        if(padres.top().second + 1 < nodoActual->hijos.size()){
+            //Puedo seguir recorriendo los hijos
+            //Entonces avanzo al que sigue
+            nodoActual = nodoActual->hijos[padres.top().second + 1];
+
+            //Aumento la posicion en el stack
+            padres.top().second = padres.top().second + 1;
+        }
+        else{
+            //Ya no puedo recorrer mas hijos, tengo que irme al otro padre
+
+            //Saco el padre de arriba del stack (que ahora deberia ser igual a nodo actual)
+            padres.pop();
+
+            //Ahora padres.top() es el padre del nodo actual
+            //Entonces ahora vuelvo a ese padre
+            //nodoActual = padres.top().first;
+
+            //Tengo que ir subiendo por los padres hasta que llegue a uno donde pueda recorrer los hijos
+            while(padres.top().second + 1 >= padres.top().first->hijos.size()){
+                padres.pop();
+            }
+
+            //Saque a los padres que no tengo que recorrer
+            //Ahora cambio el nodo
+            padres.top().second = padres.top().second + 1;
+
+            nodoActual = padres.top().first->hijos[padres.top().second];
+        }
+
+    }
 }
 
 // Ubica el iterador sobre la categoría anterior a la actual
@@ -177,7 +283,66 @@ void Taxonomia<T>::iterator::operator++() {
 // Pre: el iterador está posicionado sobre una categoría.
 template<class T>
 void Taxonomia<T>::iterator::operator--() {
-	assert(false);
+	//Hay que recorrer para atraz
+    //Es igual a ++ pero lo tengo que hacer al revés
+
+    //Si estoy en el primero (la raíz), no hay padres
+    if(padres.empty()){
+        //Estoy en el primero, tengo que ir al último
+
+        //Copiado de Taxonomia::end()!
+        //Tengo que poner el iterador al final de la taxonomia, recorro todo por el ultimo elem del vector
+        while(nodoActual->hijos.size() > 0){
+            //Si hay hijos agarro el último insertado
+
+            //Guardo el padre y la pos en el array de hijos para poder recorrer con --
+            padres.emplace(nodoActual, nodoActual->hijos.size() - 1);
+
+            //Cambio el nodo por el siguiente
+            //it.nodoActual = it.nodoActual->hijos[it.nodoActual->hijos.size() - 1];
+            nodoActual = nodoActual->hijos.back(); // .back() es el último insertado, deberia dar lo mismo que arriba
+        }
+
+    }
+    else{
+        //No estoy en la raiz
+
+        if(nodoActual->hijos.size() != 0){
+            //Tiene hijos, tengo que ver si puedo recorrer hacia atrás el vector
+
+            if(padres.top().second == 0){
+                nodoActual = padres.top().first;
+                padres.pop();
+            }
+            else{
+                padres.top().second = padres.top().second - 1;
+
+                nodoActual = padres.top().first->hijos[padres.top().second];
+
+                while(nodoActual->hijos.size() > 0){
+                    padres.emplace(nodoActual, nodoActual->hijos.size() - 1);
+                    nodoActual = nodoActual->hijos.back();
+                }
+            }
+        }
+        else{
+
+            if(padres.top().second == 0){
+                nodoActual = padres.top().first;
+                padres.pop();
+            }
+            else{
+                padres.top().second = padres.top().second - 1;
+
+                nodoActual = padres.top().first->hijos[padres.top().second];
+
+                while(nodoActual->hijos.size() > 0){
+                    padres.emplace(nodoActual, nodoActual->hijos.size() - 1);
+                    nodoActual = nodoActual->hijos.back();
+                }
+            }
+        }
+    }
 }
 
 // Inserta una subcategoría con el nombre indicado
