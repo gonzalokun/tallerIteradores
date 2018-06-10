@@ -268,26 +268,31 @@ TEST(test_taxonomia_iterator, taxonomia_iterator_eliminarCategoria) {
 	it.subcategoria(1);
 	ASSERT_EQ(*it, "c");
 	it.eliminarCategoria();
+
 	ASSERT_EQ(*it, "a");
 	ASSERT_EQ(it.cantSubcategorias(), 4);
 	it.subcategoria(1);
 	ASSERT_EQ(*it, "d");
 	it.eliminarCategoria();
+
 	ASSERT_EQ(*it, "a");
 	ASSERT_EQ(it.cantSubcategorias(), 3);
 	it.subcategoria(0);
 	ASSERT_EQ(*it, "b");
 	it.eliminarCategoria();
+
 	ASSERT_EQ(*it, "a");
 	ASSERT_EQ(it.cantSubcategorias(), 2);
 	it.subcategoria(1);
 	ASSERT_EQ(*it, "f");
 	it.eliminarCategoria();
+
 	ASSERT_EQ(*it, "a");
 	ASSERT_EQ(it.cantSubcategorias(), 1);
 	it.subcategoria(0);
 	ASSERT_EQ(*it, "e");
 	it.eliminarCategoria();
+
 	ASSERT_EQ(*it, "a");
 	ASSERT_EQ(it.cantSubcategorias(), 0);
 }

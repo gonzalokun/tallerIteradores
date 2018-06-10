@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/tests/tests_taxonomia.cpp" "/home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/cmake-build-debug/CMakeFiles/correrTests.dir/tests/tests_taxonomia.cpp.o"
+  "C:/Proyectos/tallerIteradores/tests/tests_taxonomia.cpp" "C:/Proyectos/tallerIteradores/cmake-build-debug/CMakeFiles/correrTests.dir/tests/tests_taxonomia.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,8 +17,8 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/cmake-build-debug/tests/google-test/CMakeFiles/gtest.dir/DependInfo.cmake"
-  "/home/gspringhart/springhart/algo2/taller3-iteradores/alumnos/cmake-build-debug/tests/google-test/CMakeFiles/gtest_main.dir/DependInfo.cmake"
+  "C:/Proyectos/tallerIteradores/cmake-build-debug/tests/google-test/CMakeFiles/gtest.dir/DependInfo.cmake"
+  "C:/Proyectos/tallerIteradores/cmake-build-debug/tests/google-test/CMakeFiles/gtest_main.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

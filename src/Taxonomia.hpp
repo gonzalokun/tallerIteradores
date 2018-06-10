@@ -202,11 +202,15 @@ void Taxonomia<T>::iterator::operator++() {
     //Con algo asi se puede recorrer todo en preorder
 
     //Empiezo
+    //std::cout << "ENTRE EN ++" << std::endl;
 
     //Acá me fijo si avanzo o no
     //Si entoy al final entonces todos los padres tienen la posicion cantHijos - 1 en el stack
     std::stack<std::pair<Nodo*, int>> copiaStack(padres);
     bool estoyAlfinal = true;
+
+    if(nodoActual->hijos.size() != 0)
+        estoyAlfinal = false;
 
     while(!copiaStack.empty()){
         if(copiaStack.top().second != copiaStack.top().first->hijos.size() - 1){
@@ -221,6 +225,8 @@ void Taxonomia<T>::iterator::operator++() {
         return;
     //
 
+    //std::cout << "PASE EL CHECK DE FINAL" << std::endl;
+
     if(nodoActual->hijos.size() != 0){
         //Si el nodo tiene hijos por recorrer, se pasa al que sigue
         //Para ver por que hijo se recorrió, me fijo en el stack de padres
@@ -231,8 +237,12 @@ void Taxonomia<T>::iterator::operator++() {
             //El de arriba de todo no es el actual, tengo que agregarlo
             padres.emplace(nodoActual, 0);
 
+            //std::cout << "Pase de la categoria: " << nodoActual->valor << std::endl;
+
             //Ahora el nodo actual es el primer hijo
             nodoActual = nodoActual->hijos[0];
+
+            //std::cout << "A la categotia: " << nodoActual->valor << std::endl;
         }
     }
     else{
@@ -353,7 +363,19 @@ void Taxonomia<T>::iterator::operator--() {
 // y además 0 <= i <= cantSubcategorias().
 template<class T>
 void Taxonomia<T>::iterator::insertarSubcategoria(int i, const T& nombre) {
-	assert(false);
+	//Creo el nuevo nodo
+    Nodo* nuevaCategoria = new Taxonomia<T>::Nodo();
+
+    //Le asigno el valor
+    nuevaCategoria->valor = nombre;
+
+    nodoActual->hijos.push_back(nuevaCategoria);
+
+    //Ahora la ubico en el lugar correcto
+    for(int j = nodoActual->hijos.size() - 1; i < j;j--){
+        swap(nodoActual->hijos[j], nodoActual->hijos[j-1]);
+    }
+
 }
 
 // Elimina la categoría actual de la taxonomía
@@ -365,5 +387,72 @@ void Taxonomia<T>::iterator::insertarSubcategoria(int i, const T& nombre) {
 // y además !esRaiz().
 template<class T>
 void Taxonomia<T>::iterator::eliminarCategoria() {
-	assert(false);
+	//Tengo que eliminar la categoria actual
+    //Creo un iterador para borrar los hijos
+    //Taxonomia<T>::iterator itHijos(nodoActual);
+
+//    std::cout << "BORRANDO" << std::endl;
+//
+//    std::cout << "ANTES DE BORRADO: " << std::endl;
+//    std::cout << "NODO A BORRAR: " << nodoActual->valor << std::endl;
+//    std::cout << "HIJOS: {" << std::endl;
+//
+//    for(int i = 0; i < nodoActual->hijos.size(); i++){
+//        std::cout << nodoActual->hijos[i]->valor << ", ";
+//    }
+//
+//    std::cout << "}" << std::endl;
+
+    Taxonomia<T>::iterator itHijos(nodoActual);
+
+    //Acá borro los hijos
+    for(int i = 0; itHijos.nodoActual->hijos.size(); i++){
+        //
+//        std::cout << "CICLO " << i << "DE NODO " << nodoActual->valor << std::endl;
+        itHijos.subcategoria(i);
+        itHijos.eliminarCategoria();
+    }
+    //
+
+    //Ahora borro el nodo actual
+    T valorBorrado = nodoActual->valor;
+
+    delete nodoActual;
+
+//    std::cout << "EMPEZANDO PARTE DONDE CORRO EL PRIMERO" << std::endl;
+
+    //Tengo que volver al padre
+    nodoActual = padres.top().first;
+
+    //Saco al padre de la pila de padres ya que no baje
+    padres.pop();
+
+    int indiceHijoBorrado = -1;
+
+    for(int i = 0; i < nodoActual->hijos.size() ;i++){
+        if(nodoActual->hijos[i]->valor == valorBorrado){
+            indiceHijoBorrado = i;
+            break;
+        }
+    }
+
+    //std::cout << "INDICE DEL BORRADO: " << indiceHijoBorrado << std::endl;
+
+    for(int i = indiceHijoBorrado; i < nodoActual->hijos.size() - 1; i++){
+        swap(nodoActual->hijos[i], nodoActual->hijos[i+1]);
+    }
+
+    //Ahora el borrado esta al final
+    //Reduzco el tamaño del vector
+    nodoActual->hijos.resize(nodoActual->hijos.size() - 1);
+
+//    std::cout << "DESPUES DE BORRADO: " << std::endl;
+//    std::cout << "PADRE: " << nodoActual->valor << std::endl;
+//    std::cout << "HIJOS: {" << std::endl;
+//
+//    for(int i = 0; i < nodoActual->hijos.size(); i++){
+//        std::cout << nodoActual->hijos[i]->valor << ", ";
+//    }
+//
+//    std::cout << "}" << std::endl;
 }
