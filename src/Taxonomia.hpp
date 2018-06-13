@@ -409,13 +409,13 @@ void Taxonomia<T>::iterator::eliminarCategoria() {
     for(int i = 0; itHijos.nodoActual->hijos.size(); i++){
         //
 //        std::cout << "CICLO " << i << "DE NODO " << nodoActual->valor << std::endl;
-        itHijos.subcategoria(i);
+        itHijos.subcategoria(0);
         itHijos.eliminarCategoria();
     }
     //
 
     //Ahora borro el nodo actual
-    T valorBorrado = nodoActual->valor;
+    //T valorBorrado = nodoActual->valor;
 
     delete nodoActual;
 
@@ -424,19 +424,21 @@ void Taxonomia<T>::iterator::eliminarCategoria() {
     //Tengo que volver al padre
     nodoActual = padres.top().first;
 
+    int indiceHijoBorrado = padres.top().second;
+
     //Saco al padre de la pila de padres ya que no baje
     padres.pop();
 
-    int indiceHijoBorrado = -1;
-
-    for(int i = 0; i < nodoActual->hijos.size() ;i++){
-        if(nodoActual->hijos[i]->valor == valorBorrado){
-            indiceHijoBorrado = i;
-            break;
-        }
-    }
-
-    //std::cout << "INDICE DEL BORRADO: " << indiceHijoBorrado << std::endl;
+//    int indiceHijoBorrado = -1;
+//
+//    for(int i = 0; i < nodoActual->hijos.size(); i++){
+//        if(nodoActual->hijos[i]->valor == valorBorrado){
+//            indiceHijoBorrado = i;
+//            break;
+//        }
+//    }
+//
+//    std::cout << "INDICE DEL BORRADO: " << indiceHijoBorrado << std::endl;
 
     for(int i = indiceHijoBorrado; i < nodoActual->hijos.size() - 1; i++){
         swap(nodoActual->hijos[i], nodoActual->hijos[i+1]);
